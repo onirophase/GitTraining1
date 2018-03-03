@@ -2,12 +2,14 @@ package points_cardinaux;
 
 public class Gestion {
 
+	private String points;
+
 	public Gestion() {
-		// TODO Auto-generated constructor stub
+		points = new String("NSEO");
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Gestion g = new Gestion();
 
 	}
 
