@@ -1,4 +1,4 @@
-package points_cardinaux;
+package gestion;
 
 public class Gestion {
 
