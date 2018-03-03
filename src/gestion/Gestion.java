@@ -1,7 +1,7 @@
 package gestion;
 
 public class Gestion {
-
+//
 	private String points;
 
 	public Gestion() {
