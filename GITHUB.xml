@@ -1,0 +1,164 @@
+<project name="GIT_CHORUSDT" basedir=".">
+
+
+	<property name="git.exe" location="G:\WarchoLife\WarchoPortable\PortableCommon\GitPortable\GitPortable_1.9.5\App\Git\bin\git.exe" />
+	<property name="login" value="onirophase" />
+	<property name="pass" value="onirique007" />
+	
+	<property name="nom_projet" value="GitTraining1" />
+	<property name="mail" value="herve.marchal@developpement-durable.gouv.fr" />
+	<property name="repo_projet" location="G:\WarchoLife\WarchoPortable\gitrepo_${nom_projet}" />
+	
+	<property name="nohttps_projet" value="github.com/onirophase/${nom_projet}.git" />
+	<property name="uri_projet" value="https://${nohttps_projet}" />
+
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="lib-ant/contrib/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
+	<macrodef name="git-clone">
+		<attribute name="projetjava" />
+		<sequential>
+			<propertycopy name="uri_projetjava" from="uri_@{projetjava}" />
+			<propertycopy name="repo_projetjava" from="repo_@{projetjava}" />
+			<echo>clone ${uri_projetjava} ${repo_projetjava}</echo>
+			<delete dir="${repo_projetjava}" />
+			<exec executable="${git.exe}" failonerror="true">
+				<arg line="clone" />
+				<arg line="-b" />
+				<arg line="livraison/4.2" />
+				<arg line="${uri_projetjava}" />
+				<arg line="${repo_projetjava}" />
+			</exec>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="git-cmd">
+		<attribute name="cmd" />
+		<sequential>
+			<exec executable="${git.exe}" failonerror="true">
+				<arg line="@{cmd}" />
+			</exec>
+		</sequential>
+	</macrodef>
+
+
+
+	<target name="clone_mtes_chorusdt">
+		<git-clone projetjava="mtes_chorusdt" />
+	</target>
+
+
+
+
+
+	<target name="git-config">
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="config" />
+			<arg line="--global" />
+			<arg line="user.name" />
+			<arg line="${login}" />
+		</exec>
+
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="config" />
+			<arg line="--global" />
+			<arg line="user.email" />
+			<arg line="${mail}" />
+		</exec>
+		
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="config" />
+			<arg line="--global" />
+			<arg line="--add" />
+			<arg line="http.sslVersion" />
+			<arg line="tlsv1" />
+		</exec>
+
+
+	</target>
+
+	<target name="set-origin">
+		<input message="Mot de passe" addproperty="pass" />
+
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="remote" />
+			<arg line="add" />
+			<arg line="origin" />
+			<arg line="https://${login}:${pass}@${nohttps_projet}" />
+		</exec>
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="remote" />
+			<arg line="-v" />
+		</exec>
+	</target>
+
+	<target name="remove-origin">
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="remote" />
+			<arg line="remove" />
+			<arg line="origin" />
+		</exec>
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="remote" />
+			<arg line="-v" />
+		</exec>
+	</target>
+
+	<target name="remove-remote_branch">
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="push" />
+			<arg line="origin" />
+			<arg line="--delete" />
+			<arg line="livraison/4.2" />
+		</exec>
+
+	</target>
+
+	<target name="git remote -v">
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="remote" />
+			<arg line="-v" />
+		</exec>
+	</target>
+
+	<target name="git push branch">
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="push" />
+			<arg line="origin" />
+			<arg line="livraison/5.0" />
+		</exec>
+	</target>
+
+	<target name="git commit amend">
+		<exec executable="${git.exe}" failonerror="true">
+			<arg line="commit" />
+			<arg line="--amend" />
+			<arg line="-m" />
+			<arg line='"livraison/4.2.1"' />
+		</exec>
+	</target>
+
+	<target name="iexplorer">
+		<exec executable="cmd">
+			<arg value="/c" />
+			<arg value="C:\Program Files\Internet Explorer\iexplore.exe" />
+			<arg value="${uri_projet}" />
+		</exec>
+	</target>
+
+	<target name="firefox">
+		<exec executable="cmd">
+			<arg value="/c" />
+			<arg value="C:\Program Files\Mozilla Firefox\firefox.exe" />
+			<arg value="${uri_projet}" />
+		</exec>
+	</target>
+
+
+
+
+</project>
